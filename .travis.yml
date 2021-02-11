@@ -10,7 +10,7 @@ script:
 
 after_success:
   - docker build -t grahamalytics/multi-client ./client
-  - docker build -t grahamalytics/multi-ngnix ./nginx
+  - docker build -t grahamalytics/multi-nginx ./nginx
   - docker build -t grahamalytics/multi-server ./server
   - docker build -t grahamalytics/multi-worker ./worker
   # Log in to docker CLI
