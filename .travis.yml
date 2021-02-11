@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t grahamalytics/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true grahamalytics/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t grahamalytics/multi-client ./client
+  - docker build -t grahamalytics/multi-ngnix ./nginx
+  - docker build -t grahamalytics/multi-server ./server
+  - docker build -t grahamalytics/multi-worker ./worker
+  # Log in to docker CLI
+  - echo "$DOCKER_PWD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Push built images to DockerHub
+  - docker push grahamalytics/multi-client
+  - docker push grahamalytics/multi-nginx
+  - docker push grahamalytics/multi-server
+  - docker push grahamalytics/multi-worker
