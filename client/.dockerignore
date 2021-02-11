@@ -1,0 +1,2 @@
+# ignore local node_modules folder during COPY
+node_modules
